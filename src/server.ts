@@ -1,9 +1,12 @@
 import express from 'express';
 import * as dotenv from 'dotenv';
+// import { connect } from 'mysql';
 
 dotenv.config({
   path: './config/config.env',
 });
+
+// CONNECT TO SQL DB HERE //
 
 const PORT = process.env.PORT || 5000;
 
