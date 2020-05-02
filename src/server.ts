@@ -1,23 +1,25 @@
 import express from 'express';
 import * as dotenv from 'dotenv';
-// import { connect } from 'mysql';
+
+import { connectDB } from '../config/db';
+import { allUsers, addUser } from './controllers/userController';
+import users from './routes/users';
 
 dotenv.config({
   path: './config/config.env',
 });
 
-// CONNECT TO SQL DB HERE //
-
-const PORT = process.env.PORT || 5000;
+// connect to MongoDB
+connectDB();
 
 const app = express();
 
+// body parser
 app.use(express.json());
 
-// define a route handler for the default home page
-app.get('/', (req, res) => {
-  res.send('Hello world!');
-});
+app.use('/api/v1/users', users);
+
+const PORT: number = parseInt(process.env.PORT as string, 10) || 5000;
 
 // start express server
 app.listen(PORT, () => {
