@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { Model, Document } from 'mongoose';
 
 import { ControllerBase } from '../interfaces/ControllerBase';
+import { User } from '../models/User';
 import { authenticateToken } from '../middlewares/authenticateToken';
 
 export class PortfolioController implements ControllerBase {
@@ -22,11 +23,13 @@ export class PortfolioController implements ControllerBase {
 
     this.router.use(authenticateToken);
 
-    this.router.route('/').get(this.getPortfolios);
-    this.router.route('/create').post(this.addPortfolio);
+    this.router.route('/').get(this.allPortfolios);
+    this.router.route('/:id').get(this.getPortfolio);
+    this.router.route('/create/:id').post(this.createPortfolio);
   }
 
-  getPortfolios = async (
+  // get all documents from the portfolios collection
+  private allPortfolios = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -46,16 +49,52 @@ export class PortfolioController implements ControllerBase {
     }
   };
 
-  addPortfolio = async (req: Request, res: Response, next: NextFunction) => {
+  // retrieve specific portfolio by ID
+  private getPortfolio = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<any>> => {
     try {
+      const portfolio = await this.model.findById(req.params.id);
+
+      if (!portfolio) {
+        return res.status(404).json({
+          success: false,
+          error: 'No portfolio found',
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        data: portfolio,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        success: false,
+        error: err.message,
+      });
+    }
+  };
+
+  // create portfolio as well as update User document with portfolio's _id
+  private createPortfolio = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
       const { name, totalPrice, cryptocurrencies } = req.body;
 
       // create new portfolio
       const portfolio = await this.model.create({
+        _user: id,
         name,
         totalPrice,
         cryptocurrencies,
       });
+
+      await portfolio.save();
+
+      // update User document with portfolio _id field
+      await User.findByIdAndUpdate(id, { $push: { portfolios: portfolio._id } }, { new: true });
 
       return res.status(201).json({
         success: true,
