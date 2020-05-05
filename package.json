@@ -21,9 +21,12 @@
   },
   "homepage": "https://github.com/alexscar99/portfolio-tracker#readme",
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.6",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.6",
+    "@types/helmet": "0.0.46",
+    "@types/jsonwebtoken": "^8.3.9",
     "@types/mongoose": "^5.7.14",
     "@types/node": "^13.13.4",
     "concurrently": "^5.2.0",
@@ -32,9 +35,12 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "helmet": "^3.22.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.11",
     "ts-node": "^8.9.1"
   }
