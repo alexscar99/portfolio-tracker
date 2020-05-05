@@ -6,6 +6,7 @@ export const connectDB = async (): Promise<void> => {
       useNewUrlParser: true,
       useCreateIndex: true,
       useUnifiedTopology: true,
+      useFindAndModify: false,
     });
 
     // tslint:disable-next-line:no-console
