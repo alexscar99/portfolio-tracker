@@ -1,9 +1,11 @@
 import mongoose from 'mongoose';
+import { PortfolioModel } from '../models/Portfolio';
 
 export interface UserModel extends mongoose.Document {
   email: string;
   password: string;
   createdAt: Date;
+  portfolios: mongoose.Document[];
 }
 
 const UserSchema = new mongoose.Schema({

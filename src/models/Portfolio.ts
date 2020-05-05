@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { UserModel } from './User';
 import { CryptoCurrencyModel } from './CryptoCurrency';
 
-interface PortfolioModel extends mongoose.Document {
+export interface PortfolioModel extends mongoose.Document {
   _user: UserModel;
   name: string;
   totalPrice: number;
